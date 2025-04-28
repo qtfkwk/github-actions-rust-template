@@ -10,11 +10,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Toolchain
-        uses: actions-rust-lang/setup-rust-toolchain@v1
-        with:
-          toolchain: ${{ matrix.rust }}
-          components: clippy
       - name: Outdated
         uses: addnab/docker-run-action@v3
         with:
@@ -27,6 +22,11 @@ jobs:
           image: qtfk/cargo-audit
           options: -v ${{ github.workspace }}:/github/workspace
           run: cargo audit
+      - name: Toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          toolchain: stable
+          components: clippy
       - name: Clippy
         run: cargo clippy -- -D clippy::all
       - name: Test
