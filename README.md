@@ -21,37 +21,37 @@ Example GitHub repository with default library Rust crate and GitHub Actions wor
 
 # Usage
 
-Prerequisites:
+1. Prerequisites
 
-- Install Rust (<https://rustup.rs>)
-- Create GitHub account
-- Log into [`crates.io`] with your GitHub account
+    - Install Rust (<https://rustup.rs>)
+    - Create GitHub account
+    - Log into [`crates.io`] with your GitHub account
 
-1. Ensure your repository has `dev` and `main` branches
+2. Ensure your repository has `dev` and `main` branches
    (or customize the workflows accordingly during step 3 below)
 
-2. Create a [`crates.io`] API Token with the name of your crate, desired expiration, `publish-new`
+3. Create a [`crates.io`] API Token with the name of your crate, desired expiration, `publish-new`
    and `publish-update` scopes, pattern with your crate's name at
    <https://crates.io/settings/tokens>;
    then add the secret with the name `CRATESIO_TOKEN` GitHub Actions secret at
    <https://github.com/qtfkwk/cargo-audit/settings/secrets/actions/new>
 
-3. Copy `.github/workflows/{dev,publish}.yml` from this project to your Rust project,
+4. Copy `.github/workflows/{dev,publish}.yml` from this project to your Rust project,
    modify if needed / as desired, then add and commit
     - `git checkout dev && git add ... && git commit -m ... && git push`
 
-4. Edit your source code, tests, etc
+5. Edit your source code, tests, etc
 
-5. Add and commit changes to `dev` branch and push
+6. Add and commit changes to `dev` branch and push
     - `git add ... && git commit -m '...' && git push`
 
-6. Check the "Dev" workflow run
+7. Check the "Dev" workflow run
     - <https://github.com/qtfkwk/github-actions-rust-template/actions/workflows/dev.yml>
       (replace `qtfkwk/github-actions-rust-template` with `your-username/repository`)
 
-7. Merge `dev` branch to `main` via `git checkout main && git merge dev`
+8. Merge `dev` branch to `main` via `git checkout main && git merge dev`
 
-8. Edit your `Cargo.toml` (minimally increment the version) and make any other release-related
+9. Edit your `Cargo.toml` (minimally increment the version) and make any other release-related
    changes
 
     - **NOTE**: This repository doesn't actually publish to [`crates.io`] and does not have all the
@@ -60,10 +60,10 @@ Prerequisites:
       Ensure that your `Cargo.toml` has `description`, `license`, and any other desired fields so
       the `cargo publish` command succeeds.
 
-9. Add and commit changes to `main` branch and push
+10. Add and commit changes to `main` branch and push
     - `git add ... && git commit -m '...' && git push`
 
-10. Check the "Publish" workflow run
+11. Check the "Publish" workflow run
     - <https://github.com/qtfkwk/github-actions-rust-template/actions/workflows/publish.yml>
       (replace `qtfkwk/github-actions-rust-template` with `your-username/repository`)
 
