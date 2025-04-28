@@ -1,0 +1,33 @@
+name: Dev
+on:
+  push:
+    branches:
+      - dev
+jobs:
+  dev:
+    name: Dev
+    strategy:
+      matrix:
+        os:
+          - macos-latest
+          - ubuntu-latest
+          - windows-latest
+        rust:
+          - stable
+          - nightly
+          - beta
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          toolchain: ${{ matrix.rust }}
+          components: clippy
+      - name: Clippy
+        run: cargo clippy -- -D clippy::all
+      - name: Test
+        run: cargo test -- --show-output --test-threads=1
+      - name: Build
+        run: cargo build

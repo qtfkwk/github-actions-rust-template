@@ -1,0 +1,35 @@
+name: Publish
+on:
+  push:
+    branches:
+      - main
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          toolchain: ${{ matrix.rust }}
+          components: clippy
+      - name: Outdated
+        uses: addnab/docker-run-action@v3
+        with:
+          image: qtfk/cargo-outdated
+          options: -v ${{ github.workspace }}:/github/workspace
+          run: cargo outdated --exit-code=1
+      - name: Clippy
+        run: cargo clippy -- -D clippy::all
+      - name: Test
+        run: cargo test -- --show-output --test-threads=1
+      - name: Build
+        run: cargo build
+      - name: Build release
+        run: cargo build --release
+      - name: Publish
+        run: |
+          git clean -f
+          cargo publish --token ${{ secrets.CRATESIO_TOKEN }}
