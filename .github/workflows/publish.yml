@@ -33,8 +33,12 @@ jobs:
         run: cargo test -- --show-output --test-threads=1
       - name: Build
         run: cargo build
+      - name: Run
+        run: cargo run
       - name: Build release
         run: cargo build --release
+      - name: Run release
+        run: cargo run --release
       - name: Publish
         run: |
           git clean -f
