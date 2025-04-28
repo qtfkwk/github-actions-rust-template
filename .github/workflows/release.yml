@@ -46,7 +46,7 @@ jobs:
           if [ "${{ matrix.os }}" == "windows-latest" ]; then
             bin="$bin.exe"
             asset="$dirname.zip"
-            compress="zip -r"
+            compress="7z a"
           fi
 
           cp "$bin" "$dirname"
