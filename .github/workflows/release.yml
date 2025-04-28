@@ -1,0 +1,59 @@
+name: Release
+on:
+  push:
+    tags:
+      - "[0-9]+.[0-9]+.[0-9]+"
+jobs:
+  dev:
+    name: Release
+    strategy:
+      matrix:
+        include:
+          - build: linux
+            os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+          - build: macos
+            os: macos-latest
+            target: x86_64-apple-darwin
+          - build: windows-gnu
+            os: windows-latest
+            target: x86_64-pc-windows-gnu
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          toolchain: ${{ matrix.rust }}
+      - name: Build
+        run: cargo build --release
+      - name: Run
+        run: cargo run --release
+      - name: Archive
+        shell: bash
+        run: |
+          name="$(basename $(pwd))"
+          version="$(grep ^version Cargo.toml |head -1 |cut -d'"' -f2)"
+          dirname="$name-$version-${{ matrix.target }}"
+
+          mkdir "$dirname"
+
+          bin="target/release/$name"
+          asset="$dirname.tar.gz"
+          compress="tar czf"
+
+          if [ "${{ matrix.os }}" == "windows-latest" ]; then
+            bin="$bin.exe"
+            asset="$dirname.zip"
+            compress="zip -r"
+          fi
+
+          cp "$bin" "$dirname"
+          $compress "$asset" "$dirname"
+          echo "ASSET=$asset" >>$GITHUB_ENV
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ${{ env.ASSET }}
