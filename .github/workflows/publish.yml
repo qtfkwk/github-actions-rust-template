@@ -21,6 +21,12 @@ jobs:
           image: qtfk/cargo-outdated
           options: -v ${{ github.workspace }}:/github/workspace
           run: cargo outdated --exit-code=1
+      - name: Audit
+        uses: addnab/docker-run-action@v3
+        with:
+          image: qtfk/cargo-audit
+          options: -v ${{ github.workspace }}:/github/workspace
+          run: cargo audit
       - name: Clippy
         run: cargo clippy -- -D clippy::all
       - name: Test
