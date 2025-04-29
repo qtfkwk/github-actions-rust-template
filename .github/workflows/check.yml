@@ -1,0 +1,23 @@
+name: Check
+on:
+  schedule:
+    - cron: "0 12 * * *" # daily at 12 utc
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Outdated
+        uses: addnab/docker-run-action@v3
+        with:
+          image: qtfk/cargo-outdated
+          options: -v ${{ github.workspace }}:/github/workspace
+          run: cargo outdated --exit-code=1
+      - name: Audit
+        uses: addnab/docker-run-action@v3
+        with:
+          image: qtfk/cargo-audit
+          options: -v ${{ github.workspace }}:/github/workspace
+          run: cargo audit
