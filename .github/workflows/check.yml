@@ -2,6 +2,7 @@ name: Check
 on:
   schedule:
     - cron: "0 12 * * *" # daily at 12 utc
+  workflow_dispatch:
 jobs:
   check:
     name: Check
