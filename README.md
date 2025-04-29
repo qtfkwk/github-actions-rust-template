@@ -89,7 +89,8 @@ Example GitHub repository with default library & binary Rust crate and GitHub Ac
     git tag -a 0.1.0 -m 0.1.0
 
     # Push the commits and tag
-    git push && git push --tags
+    git push --set-upstream origin main
+    git push --tags
     ```
 
 3. Create a [crates.io] API Token with the name of your crate, desired expiration, `publish-new`
@@ -111,7 +112,7 @@ Example GitHub repository with default library & binary Rust crate and GitHub Ac
     ```bash
     cd ..
     git clone git@github.com:qtfkwk/github-actions-rust-template.git
-    cd repository
+    cd -
     git checkout dev
     cp -R ../github-actions-rust-template/.github .
     # Edit `.github/workflows/*.yml` if needed
