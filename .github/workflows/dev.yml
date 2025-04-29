@@ -25,6 +25,7 @@ jobs:
         with:
           toolchain: ${{ matrix.rust }}
           components: clippy
+          cache: false
       - name: Clippy
         run: cargo clippy -- -D clippy::all
       - name: Test
