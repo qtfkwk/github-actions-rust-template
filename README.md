@@ -7,11 +7,24 @@ Example GitHub repository with default library & binary Rust crate and GitHub Ac
 ## `check`
 
 - Runs `cargo outdated` [^1] and `cargo audit` [^2] to report updated dependencies and security
-  issues, respectively
+  issues, respectively; exits with error code 1 (fails) if a dependency releases a new version or
+  there is a security issue
 - Runs on schedule: daily at 12:00 UTC
-    - This workflow can also be triggered via `workflow_dispatch` which enables external manual or
-      automated triggering via the [GitHub CLI]:
-      `gh workflow -R qtfkwk/github-actions-rust-template run check.yml` [^3]
+    - "The `schedule` event can be delayed during periods of high loads of GitHub Actions workflow
+      runs.
+      High load times include the start of every hour.
+      If the load is sufficiently high enough, some queued jobs may be dropped.
+      To decrease the chance of delay, schedule your workflow to run at a different time of the hour."
+      ([ref](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#schedule))
+    - This workflow can also be triggered via [`workflow_dispatch`], which enables external manual
+      or automated triggering via the Actions tab on GitHub, [GitHub CLI], or REST API:
+        - Manual via web browser: <https://github.com/qtfkwk/github-actions-rust-template/actions/workflows/check.yml> [^3]
+          and click the "Run workflow" button
+        - Manual via [GitHub CLI]: `gh workflow -R qtfkwk/github-actions-rust-template run check.yml` [^3]
+        - Automated (via cron and [GitHub CLI]):
+            - Add `0 12 * * * gh workflow -R qtfkwk/github-actions-rust-template run check.yml` [^3]
+              to cron on some other system (local, server, cloud, ...) via `crontab -e`; modify
+              `0 12 * * *` according to your desired schedule
 - [`check.yml`]
 
 ## `dev`
@@ -210,4 +223,5 @@ See the [Before publishing a new crate] section in [The Cargo Book] for details.
 [The Cargo Book]: https://doc.rust-lang.org/cargo/
 [GitHub CLI]: https://cli.github.com/
 [semver.org]: https://semver.org/
+[`workflow_dispatch`]: https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#workflow_dispatch
 
